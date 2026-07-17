@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import PageLoader from "./components/Loaders/PageLoader";
+import CustomCursor from "./components/UI/CustomCursor";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { AnimatePresence } from "framer-motion";
@@ -34,6 +35,7 @@ function App() {
 
   return (
     <Router>
+      <CustomCursor />
       <AppRoutes />
     </Router>
   );
