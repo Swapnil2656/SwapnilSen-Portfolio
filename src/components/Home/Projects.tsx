@@ -52,18 +52,24 @@ const Projects: React.FC<{ projects: projectItem[] }> = ({ projects }) => {
         viewport={{ once: true, amount: 0.2 }}
         className="mx-auto max-w-6xl px-4 sm:px-6"
       >
-        {/* ===== HEADER ===== */}
-        <motion.div variants={fadeUp} className="mb-10 lg:mb-15">
-          <h2 className="text-[clamp(3.5rem,8vw,6rem)] font-black leading-[1]">
-            Selected
-            <br />
-            <span className="font-light text-muted-foreground">Projects</span>
-          </h2>
-
-          <p className="mt-8 max-w-2xl text-lg sm:text-xl text-muted-foreground leading-relaxed">
-            A curated selection of products, tools, and platforms I’ve built —
-            focused on real-world usability and engineering depth.
-          </p>
+        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
+        <motion.div variants={fadeUp} className="mb-12 lg:mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-32">
+            {/* LEFT: Numbered label */}
+            <div>
+              <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">01.</p>
+              <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
+               PROJECTS
+              </h2>
+            </div>
+            {/* RIGHT: Sub-text */}
+            <div className="flex flex-col justify-center">
+              <p className="text-base sm:text-lg leading-relaxed text-neutral-600">
+                A curated selection of products, tools, and platforms I've built —
+                focused on real-world usability and engineering depth.
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* ===== PROJECT LIST ===== */}
@@ -107,17 +113,17 @@ const Projects: React.FC<{ projects: projectItem[] }> = ({ projects }) => {
                 >
                   {/* Index */}
                   <span
-                    className={`font-funnel text-sm ${
-                      isHovered ? "text-background/60" : "text-muted-foreground"
+                    className={`font-mono text-xs tracking-widest ${
+                      isHovered ? "text-background/60" : "text-neutral-400"
                     }`}
                   >
-                    {String(idx + 1).padStart(2, "0")}
+                    {String(idx + 1).padStart(2, "0")}.
                   </span>
 
                   <div className="flex gap-4 items-end justify-between">
                     {/* Title + Meta Pills */}
                     <div>
-                      <h3 className="font-funnel text-[clamp(2rem,3vw,3rem)] font-bold leading-tight">
+                      <h3 className="font-grotesk text-[clamp(1.8rem,3vw,3rem)] font-bold leading-tight uppercase">
                         {project.title}
                       </h3>
 
@@ -252,82 +258,44 @@ const Projects: React.FC<{ projects: projectItem[] }> = ({ projects }) => {
                       transition={{ duration: 0.45, ease: EASE_PREMIUM }}
                       className="relative z-10 overflow-hidden"
                     >
-                      <div
-                        className="
-        max-w-6xl
-        px-4 py-6
-        grid grid-cols-1 lg:grid-cols-12
-        gap-6 lg:gap-10
-      "
-                      >
-                        {/* Images */}
-                        <div
-                          className="
-          lg:col-span-5
-          grid grid-cols-2
-          gap-3
-        "
-                        >
-                          {project.image.map((img, i) => (
-                            <div
-                              key={i}
-                              className="
-              relative
-              aspect-video
-              overflow-hidden
-              rounded-xl
-              border border-border
-            "
-                            >
-                              <img
-                                src={img}
-                                alt={`${project.title} preview ${i + 1}`}
-                                className="
-                absolute inset-0
-                w-full h-full
-                object-cover
-                transition-transform duration-300
-                hover:scale-[1.04]
-              "
-                              />
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Description + Tech */}
-                        <div className="lg:col-span-7 flex flex-col justify-between">
-                          <p
-                            className={`
+                      <div className="px-4 py-6 max-w-4xl">
+                        {/* Description */}
+                        <p
+                          className={`
             text-sm md:text-base
             leading-relaxed
-            mb-6
+            mb-8
             transition-colors
-            ${isHovered ? "text-background/80" : "text-muted-foreground"}
+            ${isHovered ? "text-background/80" : "text-neutral-600"}
           `}
-                          >
-                            {project.description}
-                          </p>
+                        >
+                          {project.description}
+                        </p>
 
+                        {/* ENVIRONMENT DEPENDENCIES — reference label */}
+                        <div className="mb-3">
+                          <p className={`font-mono text-[10px] tracking-widest uppercase mb-3 ${isHovered ? "text-background/50" : "text-neutral-400"}`}>
+                            ENVIRONMENT DEPENDENCIES
+                          </p>
                           <div className="flex flex-wrap gap-2">
                             {project.tech.map((t) => (
                               <span
                                 key={t}
                                 className={`
-                rounded-full
-                px-3 py-[5px]
-                text-[11px]
-                font-medium
-                tracking-wide
-                border
-                transition-colors
-                ${
-                  isHovered
-                    ? "border-background/40 text-background"
-                    : "border-border text-muted-foreground"
-                }
-              `}
+                  px-3 py-[5px]
+                  text-[11px]
+                  font-mono
+                  tracking-wide
+                  border
+                  transition-colors
+                  ${
+                    isHovered
+                      ? "border-background/40 text-background"
+                      : "border-border text-neutral-500"
+                  }
+                `}
                               >
-                                {t}
+                                {t.toLowerCase()}
                               </span>
                             ))}
                           </div>

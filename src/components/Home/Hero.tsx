@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Github, Instagram, Linkedin, Mail, Youtube } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import YourImg from "/assets/retouch_2026071723312479.png";
 import CVPDF from "/assets/Swapnil_Sen_Resume_tex.pdf";
 import { SocialLink } from "../../utils/constants";
@@ -9,22 +9,22 @@ import {
   fadeUp,
   fadeUpSlow,
   scaleReveal,
-  hoverScale,
 } from "../../utils/animations";
 
 /* ===================== COMPONENT ===================== */
 
 const Hero: React.FC = () => {
   const socials: SocialLink[] = [
-    { href: "https://github.com/Swapnil2656", icon: <Github /> },
-    { href: "https://www.linkedin.com/in/swapnil-sen-812030309/", icon: <Linkedin /> },
-    { href: "mailto:swapnilsen2656@gmail.com", icon: <Mail /> },
+    { href: "https://github.com/Swapnil2656", icon: <Github size={18} /> },
+    { href: "https://www.linkedin.com/in/swapnil-sen-812030309/", icon: <Linkedin size={18} /> },
+    { href: "mailto:swapnilsen2656@gmail.com", icon: <Mail size={18} /> },
   ];
 
   return (
-    <section className="relative mb-10 sm:mb-0 sm:h-[94vh] overflow-hidden">
+    <section className="relative mb-10 sm:mb-0 sm:h-[96vh] overflow-hidden">
       <div className="xl:max-w-7xl mx-auto px-4 sm:px-6 w-full h-full">
         <div className="flex gap-20 h-full lg:items-center">
+
           {/* RIGHT — TEXT */}
           <motion.div
             variants={staggerContainerSlow}
@@ -32,21 +32,23 @@ const Hero: React.FC = () => {
             animate="show"
             className="w-full max-w-2xl z-10 relative ml-auto"
           >
+            {/* Code-comment label — from reference portfolio */}
             <motion.p
               variants={fadeUp}
-              className="font-jost text-xs ml:text-sm tracking-widest text-neutral-600 mb-4"
+              className="font-mono text-xs tracking-widest text-neutral-500 mb-5"
             >
-              HELLO, I AM
+              /* Initializing profile... */
             </motion.p>
 
             <motion.h1
               variants={fadeUpSlow}
               className="
                 text-[clamp(3rem,9vw,7rem)]
-                font-funnel
-                font-extrabold
-                leading-[0.95]
+                font-grotesk
+                font-bold
+                leading-[0.92]
                 tracking-tight
+                uppercase
                 mb-6 md:mb-8
               "
             >
@@ -55,91 +57,96 @@ const Hero: React.FC = () => {
 
             <motion.p
               variants={fadeUp}
-              className="sm:max-w-sm lg:max-w-xl font-jost text-lg ml:text-xl sm:text-lg md:text-xl tracking-widest text-neutral-600 mb-4 md:mb-6 uppercase"
+              className="sm:max-w-sm lg:max-w-xl font-mono text-xs sm:text-sm tracking-widest text-neutral-500 mb-5 uppercase"
             >
-              Software Engineer · AI & ML Enthusiast · Full Stack Developer
+              Software Engineer · AI & ML · Full Stack
             </motion.p>
 
             <motion.p
               variants={fadeUp}
-              className="sm:max-w-sm md:max-w-md lg:max-w-xl text-base ml:text-lg xsm:text-xl sm:text-lg lg:text-xl text-neutral-600 leading-relaxed mb-4 md:mb-8"
+              className="sm:max-w-sm md:max-w-md lg:max-w-xl text-base lg:text-lg text-neutral-600 leading-relaxed mb-6 md:mb-8"
             >
-              Results-driven student and developer with a robust foundation in Data Structures, Algorithms, and modern frameworks. I build scalable applications, optimize backend performance, and drive engineering excellence.
+              First-year AI & ML student at Parul University with a certified IT Specialist background and a bias for shipping real products over writing theory. I've built and shipped 8+ full-stack projects across hackathons — from a carbon-intelligence platform for cloud infra (Carbonix) to a full restaurant POS with live kitchen displays (Cafe POS) — working across React Native, Next.js, FastAPI, and MongoDB. Strong in DSA (Java/Python) and system design fundamentals, with a growing focus on scalable backend architecture.
             </motion.p>
 
-            <motion.div
-              variants={fadeUp}
-              className="
-    mt-6
-    mb-5
-    sm:mb-6
-    gap-10
-    flex
-    justify-center
-    sm:justify-start
-    text-neutral-800
-    text-center
-  "
-            >
-              <div>
-                <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  15+
-                </p>
-                <p className="mt-1 text-xs tracking-widest text-neutral-500 uppercase">
-                  Projects
-                </p>
-              </div>
-
-              <div>
-                <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  4+
-                </p>
-                <p className="mt-1 text-xs tracking-widest text-neutral-500 uppercase">
-                  Hackathons
-                </p>
-              </div>
-
-              <div>
-                <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  3+
-                </p>
-                <p className="mt-1 text-xs tracking-widest text-neutral-500 uppercase">
-                  Years Exp
-                </p>
+            {/* STATUS BADGE — reference style */}
+            <motion.div variants={fadeUp} className="mb-6 md:mb-8">
+              <div
+                className="
+                  inline-flex items-center gap-3
+                  border border-border
+                  px-4 py-2
+                  font-mono text-xs tracking-widest uppercase
+                "
+              >
+                <span className="text-neutral-500">STATUS:</span>
+                <span style={{ color: "var(--color-accent-green)" }}>
+                  ACTIVE / BUILDING
+                </span>
               </div>
             </motion.div>
 
+            {/* STATS */}
             <motion.div
               variants={fadeUp}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6"
+              className="mb-6 md:mb-8 gap-10 flex justify-center sm:justify-start text-neutral-800 text-center"
+            >
+              <div>
+                <p className="text-3xl sm:text-5xl font-grotesk font-bold leading-none">15+</p>
+                <p className="mt-1 text-xs tracking-widest text-neutral-500 uppercase font-mono">Projects</p>
+              </div>
+              <div>
+                <p className="text-3xl sm:text-5xl font-grotesk font-bold leading-none">4+</p>
+                <p className="mt-1 text-xs tracking-widest text-neutral-500 uppercase font-mono">Hackathons</p>
+              </div>
+            </motion.div>
+
+            {/* CTA BUTTONS — sharp rectangular, reference style */}
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <motion.button
-                whileHover={hoverScale}
                 whileTap={{ scale: 0.98 }}
                 onClick={() =>
                   document
                     .querySelector("#contact")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="px-10 py-4 bg-black text-white rounded-full hover:bg-neutral-900 transition hover:cursor-pointer"
+                className="
+                  px-8 py-3.5
+                  bg-foreground text-background
+                  font-mono text-xs tracking-widest uppercase
+                  border border-foreground
+                  hover:bg-neutral-800
+                  transition-colors
+                  hover:cursor-pointer
+                "
               >
-                Let’s collaborate
+                ◎ Establish Connection
               </motion.button>
 
               <motion.a
-                whileHover={hoverScale}
                 whileTap={{ scale: 0.98 }}
                 href={CVPDF}
                 download
-                className="px-10 py-4 border border-neutral-400 rounded-full hover:bg-neutral-200 transition text-center"
+                className="
+                  px-8 py-3.5
+                  border border-neutral-400
+                  font-mono text-xs tracking-widest uppercase
+                  hover:bg-neutral-200
+                  transition-colors
+                  text-center
+                "
               >
-                Download CV
+                ↓ Download CV
               </motion.a>
             </motion.div>
 
+            {/* SOCIALS */}
             <motion.div
               variants={fadeUp}
-              className="flex justify-center sm:justify-start items-center gap-6 sm:gap-4 md:gap-5 lg:gap-8 xl:gap-10 mt-8"
+              className="flex justify-center sm:justify-start items-center gap-6 mt-8"
             >
               {socials.map(({ href, icon }, i) => (
                 <a
@@ -147,7 +154,7 @@ const Hero: React.FC = () => {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-500 hover:text-black transition"
+                  className="text-neutral-400 hover:text-foreground transition-colors"
                 >
                   {icon}
                 </a>
@@ -176,7 +183,7 @@ const Hero: React.FC = () => {
             <div className="h-full flex items-center">
               <img
                 src={YourImg}
-                alt="Your Name"
+                alt="Swapnil Sen"
                 loading="lazy"
                 className="
                   h-[90%]

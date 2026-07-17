@@ -1,44 +1,27 @@
-import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, Youtube, Instagram } from "lucide-react";
-import { SocialLink } from "../../utils/constants";
+import React, { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
 import StaggeredMenu from "./StaggeredMenu";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 /* ===================== ANIMATIONS ===================== */
 
-/** Desktop navbar reveal */
 const navbarVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: -20,
-    filter: "blur(4px)",
-  },
+  hidden: { opacity: 0, y: -20, filter: "blur(4px)" },
   visible: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: {
-      duration: 1,
-      ease: EASE_PREMIUM,
-    },
+    transition: { duration: 1, ease: EASE_PREMIUM },
   },
 };
 
-/** Navbar inner items (logo, links, socials) */
 const navItemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: -10,
-  },
+  hidden: { opacity: 0, y: -10 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      delay: 0.1 + i * 0.05,
-      duration: 0.8,
-      ease: EASE_PREMIUM,
-    },
+    transition: { delay: 0.1 + i * 0.05, duration: 0.8, ease: EASE_PREMIUM },
   }),
 };
 
@@ -52,10 +35,8 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     const onResize = () => setWindowWidth(window.innerWidth);
-
     window.addEventListener("scroll", onScroll);
     window.addEventListener("resize", onResize);
-
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
@@ -70,30 +51,25 @@ const Navbar: React.FC = () => {
     if (windowWidth >= 768) setMenuOpen(false);
   }, [windowWidth]);
 
-  const links = ["Projects", "Services", "Skills", "About", "Contact"];
-
-  const socials: SocialLink[] = [
-    { href: "https://github.com/username", icon: <Github /> },
-    { href: "https://linkedin.com/in/username", icon: <Linkedin /> },
-    { href: "mailto:hello@example.com", icon: <Mail /> },
-    { href: "https://www.youtube.com/@username", icon: <Youtube /> },
-    { href: "https://www.instagram.com/username", icon: <Instagram /> },
+  const links = [
+    { label: "01. Projects", id: "projects" },
+    { label: "02. Services", id: "services" },
+    { label: "03. Skills", id: "skills" },
+    { label: "04. About", id: "about" },
+    { label: "05. Contact", id: "contact" },
   ];
 
   const menuItems = links.map((item) => ({
-    label: item,
-    ariaLabel: item,
-    link: `#${item.toLowerCase()}`,
+    label: item.label,
+    ariaLabel: item.label,
+    link: `#${item.id}`,
   }));
 
   const staggeredSocials = [
-    { label: "GitHub", link: "https://github.com/username" },
-    { label: "LinkedIn", link: "https://linkedin.com/in/username" },
-    { label: "YouTube", link: "https://www.youtube.com/@username" },
-    { label: "Instagram", link: "https://www.instagram.com/username" },
+    { label: "GitHub", link: "https://github.com/Swapnil2656" },
+    { label: "LinkedIn", link: "https://www.linkedin.com/in/swapnil-sen-812030309/" },
   ];
 
-  /* Desktop navbar width logic */
   let maxWidth = windowWidth;
   let marginLeft = 0;
 
@@ -101,7 +77,6 @@ const Navbar: React.FC = () => {
     if (windowWidth >= 1440) maxWidth = windowWidth * 0.6;
     else if (windowWidth >= 1024) maxWidth = windowWidth * 0.8;
     else maxWidth = windowWidth * 0.95;
-
     marginLeft = (windowWidth - maxWidth) / 2;
   }
 
@@ -118,64 +93,68 @@ const Navbar: React.FC = () => {
             width: "100%",
             maxWidth,
             marginLeft,
-            padding: scrolled ? "1rem 2rem" : "1.5rem 2rem",
+            padding: scrolled ? "0.75rem 2rem" : "1.25rem 2rem",
             borderRadius: scrolled ? "2.5rem" : "0rem",
             backgroundColor: scrolled
-              ? "rgba(255,255,255,0.3)"
+              ? "rgba(242,242,245,0.85)"
               : "var(--color-background)",
             backdropFilter: scrolled ? "blur(18px)" : "none",
-            boxShadow: scrolled ? "0 12px 32px rgba(0,0,0,0.12)" : "none",
-            border: scrolled ? "1px solid rgba(255,255,255,0.5)" : "none",
-            transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)", // Apply same ease to CSS transition
+            boxShadow: scrolled ? "0 4px 24px rgba(0,0,0,0.08)" : "none",
+            border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
+            borderBottom: !scrolled ? "1px solid var(--color-border)" : undefined,
+            transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
           <div className="w-full xl:max-w-7xl mx-auto flex items-center justify-between">
+            {/* LOGO */}
             <motion.span
               custom={0}
               variants={navItemVariants}
               initial="hidden"
               animate="visible"
-              className="text-lg font-extrabold tracking-tight"
+              className="text-base font-bold tracking-tight font-grotesk uppercase"
             >
               Swapnil Sen
             </motion.span>
 
-            <ul className="flex md:gap-5 xl:gap-6 text-base font-medium">
+            {/* NUMBERED LINKS */}
+            <ul className="flex md:gap-4 xl:gap-6 text-[11px] font-bold tracking-widest uppercase font-mono">
               {links.map((item, i) => (
                 <motion.li
-                  key={item}
+                  key={item.id}
                   custom={i + 1}
                   variants={navItemVariants}
                   initial="hidden"
                   animate="visible"
                 >
                   <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition"
+                    href={`#${item.id}`}
+                    className="text-neutral-500 hover:text-foreground transition-colors"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 </motion.li>
               ))}
             </ul>
 
-            <div className="flex md:gap-4 xl:gap-5">
-              {socials.map(({ href, icon }, i) => (
-                <motion.a
-                  key={i}
-                  custom={links.length + i + 1}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="visible"
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--color-muted-foreground)] hover:text-black transition"
-                >
-                  {icon}
-                </motion.a>
-              ))}
-            </div>
+            {/* SOCIAL ICONS */}
+            <motion.div
+              custom={links.length + 1}
+              variants={navItemVariants}
+              initial="hidden"
+              animate="visible"
+              className="flex items-center gap-4 text-foreground"
+            >
+              <a href="https://github.com/Swapnil2656" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-500 transition-colors">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href="https://www.linkedin.com/in/swapnil-sen-812030309/" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-500 transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="mailto:swapnilsen2656@gmail.com" className="hover:text-neutral-500 transition-colors">
+                <Mail className="w-5 h-5" />
+              </a>
+            </motion.div>
           </div>
         </motion.header>
       )}

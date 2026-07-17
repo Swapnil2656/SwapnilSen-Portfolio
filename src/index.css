@@ -1,17 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Jost:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --breakpoint-ml: 400px;
   --breakpoint-xsm: 550px;
   
-  --color-background: rgba(246, 245, 242, 1);
-  --color-foreground: rgba(34, 34, 34, 1);
-  --color-muted-foreground: rgba(46, 45, 45, 0.8);
+  --color-background: rgba(242, 242, 245, 1);
+  --color-foreground: rgba(12, 12, 12, 1);
+  --color-muted-foreground: rgba(46, 45, 45, 0.75);
   --color-border: rgba(200, 200, 200, 1);
+  --color-accent-green: rgba(0, 200, 100, 1);
 
   --font-jost: 'Jost', 'system-ui', 'serif';
-  --font-funnel: 'Funnel Sans', 'system-ui', 'serif'; 
+  --font-funnel: 'Funnel Sans', 'system-ui', 'serif';
+  --font-grotesk: 'Space Grotesk', 'system-ui', 'sans-serif';
+  --font-mono: 'Space Mono', 'Courier New', 'monospace';
 }
 
 html {
@@ -24,4 +27,3 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-

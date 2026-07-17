@@ -58,19 +58,21 @@ const DeveloperTools: React.FC = () => {
         className="mx-auto max-w-6xl"
       >
         {/* Header */}
-        <motion.div variants={fadeUp} className="mb-10 lg:mb-15 px-4 sm:px-6">
-          <h2 className="text-[clamp(3.2rem,7vw,5.5rem)] font-black leading-[1.1] tracking-tight">
-            Developer
-            <br />
-            <span className="font-light text-muted-foreground">
-              Tools & Open Source
-            </span>
-          </h2>
-
-          <p className="mt-8 max-w-2xl text-lg sm:text-xl text-muted-foreground leading-relaxed">
-            Open-source utilities and CLI tools focused on developer experience,
-            productivity, and real-world usage.
-          </p>
+        <motion.div variants={fadeUp} className="mb-12 lg:mb-20 px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-20">
+            <div>
+              <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">06.</p>
+              <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
+                DEV<br />TOOLS
+              </h2>
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-base sm:text-lg leading-relaxed text-neutral-600">
+                Open-source utilities and CLI tools focused on developer experience,
+                productivity, and real-world usage.
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* Content */}

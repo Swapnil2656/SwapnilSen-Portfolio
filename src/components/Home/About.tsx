@@ -23,33 +23,19 @@ const journeyItems = [
     details:
       "Completed Senior Secondary education (PCM) in Ambikapur, Chhattisgarh.",
   },
-  {
-    year: "2024",
-    title: "DevBhoomi Hackathon",
-    details:
-      "Secured Third Prize at the DevBhoomi Uttarakhand 2024 Hackathon.",
-  },
-  {
-    year: "Current",
-    title: "Full-Stack Development",
-    details:
-      "Building scalable applications using React, Next.js, and Node.js, alongside native iOS development.",
-  }
 ];
 
 /* ===================== COMPONENT ===================== */
 
 const About = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   const isDesktop = () => window.innerWidth >= 1024;
-
   const toggleItem = (idx: number) => {
     setActiveIndex((prev) => (prev === idx ? null : idx));
   };
 
   return (
-    <section id="about" className="py-8 lg:py-16 scroll-mt-14">
+    <section id="about" className="py-16 lg:py-28 scroll-mt-14">
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -57,37 +43,43 @@ const About = () => {
         viewport={{ once: true, amount: 0.05 }}
         className="max-w-6xl mx-auto px-4 sm:px-6"
       >
-        {/* TITLE */}
-        <motion.h2
-          variants={fadeUp}
-          className="font-funnel font-extrabold text-[clamp(3.5rem,9vw,7rem)] leading-[1.02] tracking-tight max-w-4xl"
-        >
-          About Me
-        </motion.h2>
+        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-20 mb-16 lg:mb-24">
+          {/* LEFT: Numbered section label */}
+          <motion.div variants={fadeUp}>
+            <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">04.</p>
+            <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
+              ABOUT
+            </h2>
+          </motion.div>
 
-        {/* DESCRIPTION */}
-        <motion.p
-          variants={fadeUp}
-          className="mt-6 md:mt-8 max-w-3xl text-base sm:text-xl leading-[1.9] text-neutral-700"
-        >
-          Results-driven Software Engineer and Computer Science (AI & ML) student with a robust foundation in Data Structures, Algorithms, and Full-Stack Development.
-          <br />
-          <br />I am passionate about system design, optimizing backend performance, and driving engineering excellence through competitive hackathons and building scalable products.
-        </motion.p>
+          {/* RIGHT: Description paragraphs */}
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
+            <p className="text-base sm:text-lg leading-[1.9] text-neutral-700">
+              First-year AI & ML student at Parul University with a certified IT Specialist background and a bias for shipping real products over writing theory. I've built and shipped 8+ full-stack projects across hackathons — from a carbon-intelligence platform for cloud infra (Carbonix) to a full restaurant POS with live kitchen displays (Cafe POS) — working across React Native, Next.js, FastAPI, and MongoDB.
+            </p>
+            <p className="text-base sm:text-lg leading-[1.9] text-neutral-700">
+              Strong in DSA (Java/Python) and system design fundamentals, with a growing focus on scalable backend architecture.
+            </p>
+            {/* Quote block — reference style */}
+            <div className="border border-border p-5 mt-2">
+              <p className="font-mono text-sm italic text-neutral-500 leading-relaxed">
+                "Build things that matter, architect things that last."
+              </p>
+            </div>
+          </motion.div>
+        </div>
 
         {/* JOURNEY */}
-        <motion.div variants={staggerContainerSlow} className="mt-12 lg:mt-24">
-          <motion.p
-            variants={fadeUp}
-            className="mb-10 text-xs sm:text-sm tracking-[0.35em] uppercase text-neutral-600"
-          >
-            Journey
-          </motion.p>
+        <motion.div variants={staggerContainerSlow}>
+          <motion.div variants={fadeUp} className="flex items-center gap-4 mb-10">
+            <span className="font-mono text-xs tracking-widest uppercase text-neutral-400">Journey</span>
+            <div className="flex-1 h-px bg-border" />
+          </motion.div>
 
           <div className="space-y-10 md:space-y-14 lg:space-y-20">
             {journeyItems.map((item, idx) => {
               const isActive = activeIndex === idx;
-
               return (
                 <motion.div
                   key={idx}
@@ -99,31 +91,24 @@ const About = () => {
                   onHoverEnd={() => isDesktop() && setActiveIndex(null)}
                   className="relative"
                 >
-                  {/* HEADER */}
                   <motion.div
                     onClick={() => !isDesktop() && toggleItem(idx)}
-                    whileHover={isDesktop() ? { scale: 1.015 } : undefined}
+                    whileHover={isDesktop() ? { x: 8 } : undefined}
                     transition={{ type: "spring", stiffness: 260, damping: 24 }}
                     className="cursor-pointer py-2 sm:py-3 lg:py-4"
                   >
                     {/* MOBILE */}
                     <div className="lg:hidden space-y-2">
-                      <span className="font-funnel text-sm sm:text-base text-neutral-500 mb-2">
+                      <span className="font-mono text-xs text-neutral-400 tracking-widest uppercase">
                         {item.year}
                       </span>
-
                       <div className="flex items-center justify-between gap-6 mt-2">
-                        <h4 className="font-semibold text-xl sm:text-3xl leading-tight tracking-tight text-neutral-900">
+                        <h4 className="font-grotesk font-bold text-xl sm:text-3xl leading-tight tracking-tight text-foreground">
                           {item.title}
                         </h4>
-
                         <motion.span
                           animate={{ rotate: isActive ? 45 : 0 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 360,
-                            damping: 22,
-                          }}
+                          transition={{ type: "spring", stiffness: 360, damping: 22 }}
                           className="text-neutral-500"
                         >
                           <Plus size={24} />
@@ -134,22 +119,16 @@ const About = () => {
                     {/* DESKTOP */}
                     <div className="hidden lg:flex items-center justify-between gap-10">
                       <div className="flex items-center gap-10">
-                        <span className="font-mono text-sm text-neutral-500 w-14">
+                        <span className="font-mono text-xs text-neutral-400 tracking-widest uppercase w-20">
                           {item.year}
                         </span>
-
-                        <h4 className="font-semibold text-[clamp(1.9rem,3vw,2.5rem)] leading-tight tracking-tight text-neutral-900 max-w-3xl">
+                        <h4 className="font-grotesk font-bold text-[clamp(1.9rem,3vw,2.5rem)] leading-tight tracking-tight text-foreground max-w-3xl">
                           {item.title}
                         </h4>
                       </div>
-
                       <motion.span
                         animate={{ rotate: isActive ? 45 : 0 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 360,
-                          damping: 22,
-                        }}
+                        transition={{ type: "spring", stiffness: 360, damping: 22 }}
                         className="text-neutral-500"
                       >
                         <Plus size={26} />
@@ -157,7 +136,6 @@ const About = () => {
                     </div>
                   </motion.div>
 
-                  {/* DETAILS */}
                   <AnimatePresence initial={false}>
                     {isActive && (
                       <motion.div
@@ -170,21 +148,16 @@ const About = () => {
                             opacity: { duration: 0.3, delay: 0.1 },
                           },
                         }}
-                        exit={{
-                          height: 0,
-                          opacity: 0,
-                          transition: { duration: 0.3 },
-                        }}
+                        exit={{ height: 0, opacity: 0, transition: { duration: 0.3 } }}
                         className="overflow-hidden"
                       >
-                        <p className="mt-3 max-w-3xl text-neutral-700 text-base sm:text-lg leading-[1.85]">
+                        <p className="mt-3 max-w-3xl text-neutral-600 text-base sm:text-lg leading-[1.85] font-mono">
                           {item.details}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  {/* LINE */}
                   <div className="mt-4 lg:mt-8 h-px bg-border" />
                 </motion.div>
               );

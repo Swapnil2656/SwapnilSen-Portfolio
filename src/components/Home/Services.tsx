@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { Code, Globe, Server, Book, TrendingUp, BarChart2 } from "lucide-react";
+import { Code, Globe, Server, Database, TrendingUp, Cpu, Smartphone } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -14,21 +14,22 @@ interface ServiceItem {
 }
 
 const services: ServiceItem[] = [
-  { icon: "Server", title: "Full-Stack Web Development" },
-  { icon: "Code", title: "iOS App Development" },
-  { icon: "TrendingUp", title: "AI & ML Integrations" },
-  { icon: "Globe", title: "Responsive UI/UX" },
-  { icon: "BarChart2", title: "Database Architecture" },
-  { icon: "Book", title: "API Development" },
+  { icon: "Globe", title: "Full-Stack Web Development" },
+  { icon: "Smartphone", title: "Native iOS Development" },
+  { icon: "TrendingUp", title: "AI & ML Solutions" },
+  { icon: "Server", title: "Backend & APIs" },
+  { icon: "Database", title: "Database Management" },
+  { icon: "Code", title: "Web Scraping & Automation" },
 ];
 
 const iconMap: Record<string, any> = {
   Code,
   Globe,
   Server,
-  Book,
+  Database,
   TrendingUp,
-  BarChart2,
+  Cpu,
+  Smartphone,
 };
 
 const Services: React.FC = () => {
@@ -76,7 +77,7 @@ const Services: React.FC = () => {
     <section
       id="services"
       ref={containerRef}
-      className="scroll-mt-14 py-8 lg:py-16 flex flex-col relative z-0 sticky top-16"
+      className="scroll-mt-14 py-8 lg:py-16 flex flex-col relative overflow-hidden"
     >
       <motion.div
         className="max-w-7xl mx-auto px-4 sm:px-6 w-full"
@@ -85,16 +86,24 @@ const Services: React.FC = () => {
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
       >
-        {/* Heading */}
+        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
         <motion.div variants={fadeUp}>
-          <div className="mb-16">
-            <h2 className="font-funnel font-extrabold text-[clamp(3.5rem,8vw,6rem)] leading-[1.05] tracking-tight text-foreground">
-              What I <span className="font-extrabold">Offer</span>
-            </h2>
-            <p className="mt-6 text-base sm:text-xl leading-[1.9] text-muted-foreground max-w-3xl">
-              Services to help bring your ideas to life — from development to
-              optimization and learning.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-20 mb-16">
+            {/* LEFT: Numbered label */}
+            <div>
+              <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">05.</p>
+              <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
+                WHAT I<br />OFFER
+              </h2>
+            </div>
+
+            {/* RIGHT: Sub-text */}
+            <div className="flex flex-col justify-center">
+              <p className="mt-4 text-base sm:text-lg leading-[1.9] text-neutral-600 max-w-3xl">
+                Services to help bring your ideas to life — from development to
+                optimization and learning.
+              </p>
+            </div>
           </div>
         </motion.div>
 

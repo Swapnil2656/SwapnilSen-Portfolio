@@ -6,34 +6,55 @@ import {
   Database,
   Server,
   Globe,
-  GitBranch,
   Github,
-  Cloud,
   Layers,
 } from "lucide-react";
+import { staggerContainer, fadeUp } from "../../utils/animations";
 
 export interface TechStackItem {
   name: string;
   icon: React.ReactNode;
 }
 
-const techStack: TechStackItem[] = [
+/* ── SKILL CATEGORIES — reference-style proficiency cards ── */
+const skillCategories = [
+  {
+    title: "Languages",
+    proficiency: 88,
+    skills: ["Python", "Java", "C", "JavaScript", "TypeScript", "Swift"],
+  },
+  {
+    title: "Frontend & Frameworks",
+    proficiency: 85,
+    skills: ["React.js", "Next.js", "Tailwind CSS", "HTML/CSS"],
+  },
+  {
+    title: "Backend & Databases",
+    proficiency: 82,
+    skills: ["Node.js", "Express.js", "MySQL", "MongoDB", "SQL"],
+  },
+  {
+    title: "Tools & Infrastructure",
+    proficiency: 78,
+    skills: ["Docker", "Git & GitHub", "Web Scraping"],
+  },
+];
+
+/* ── TECH ICONS (kept for potential use) ── */
+export const techStack: TechStackItem[] = [
   { name: "Python", icon: <Code /> },
   { name: "Java", icon: <Code /> },
   { name: "C", icon: <Code /> },
   { name: "JavaScript", icon: <Code /> },
   { name: "TypeScript", icon: <Braces /> },
   { name: "Swift", icon: <Code /> },
-
   { name: "React.js", icon: <Layers /> },
   { name: "Next.js", icon: <Layers /> },
   { name: "Tailwind CSS", icon: <Braces /> },
   { name: "HTML/CSS", icon: <Globe /> },
-
   { name: "MySQL", icon: <Database /> },
   { name: "MongoDB", icon: <Database /> },
   { name: "SQL", icon: <Database /> },
-
   { name: "Docker", icon: <Server /> },
   { name: "Git & GitHub", icon: <Github /> },
   { name: "Web Scraping", icon: <Globe /> },
@@ -45,112 +66,64 @@ const sectionVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const techContainerVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.08,
-    },
-  },
-};
-
-const techItemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 14,
-    scale: 0.96,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.9,
-      ease: [0.16, 1, 0.3, 1], // editorial / premium easing
-    },
-  },
-};
-
-/* ------------------------------ Skills Component ------------------------------ */
 const Skills: React.FC = () => {
-  // Helper: calculate responsive icon size
-  const getIconSize = () => {
-    if (typeof window !== "undefined") {
-      const width = window.innerWidth;
-      if (width < 640) return 24; // mobile
-      if (width < 1024) return 30; // tablet
-      return 36; // desktop
-    }
-    return 36;
-  };
-
-  const [iconSize, setIconSize] = React.useState(getIconSize());
-
-  React.useEffect(() => {
-    const handleResize = () => setIconSize(getIconSize());
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
-    <section id="skills" className="pb-6 pt-24 lg:pt-26 scroll-mt-14">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        {/* Heading + Description */}
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={sectionVariants}
-        >
-          <motion.h2
-            variants={sectionVariants}
-            className="text-[clamp(3.3rem,8vw,6rem)] font-black leading-[1] tracking-tight"
-          >
-            Skills &<br />
-            <span className="mt-2 block font-light text-muted-foreground">
-              Technologies
-            </span>
-          </motion.h2>
-          <motion.p
-            variants={sectionVariants}
-            className="mt-10 text-lg sm:text-xl text-muted-foreground leading-relaxed"
-          >
-            A focused stack I use to design, build and ship scalable,
-            maintainable software — from fundamentals to production.
-          </motion.p>
-        </motion.div>
+    <section id="skills" className="py-16 lg:py-28 scroll-mt-14">
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+        className="max-w-6xl mx-auto px-4 sm:px-6"
+      >
+        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-20 mb-16">
+          {/* LEFT: Numbered label */}
+          <motion.div variants={fadeUp}>
+            <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">03.</p>
+            <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
+              SKILLS
+            </h2>
+          </motion.div>
 
-        {/* Tech Grid */}
+          {/* RIGHT: Sub-heading */}
+          <motion.div variants={fadeUp} className="flex flex-col justify-center">
+            <p className="text-base sm:text-lg leading-relaxed text-neutral-600">
+              A curated set of technologies I use to build fast, reliable, and scalable systems — from frontend interfaces to backend infrastructure.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* ── PROFICIENCY CARDS — reference style ── */}
         <motion.div
-          className="mt-15 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-16"
-          variants={techContainerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+          className="space-y-4"
         >
-          {techStack.map((tech, idx) => (
+          {skillCategories.map((cat, i) => (
             <motion.div
-              key={tech.name}
-              className={`group flex items-center gap-2 md:gap-4 cursor-default ${
-                idx % 2 === 0 ? "translate-y-0" : "translate-y-2 md:translate-y-0"
-              }`}
-              variants={techItemVariants}
-              whileHover={{ scale: 1.15, rotate: 2 }}
+              key={i}
+              variants={fadeUp}
+              className="border border-border p-6 sm:p-8 hover:border-foreground/30 transition-colors"
             >
-              <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                {React.cloneElement(tech.icon as React.ReactElement, {
-                  size: iconSize,
-                  strokeWidth: 1.5,
-                })}
-              </span>
-              <span className="text-[clamp(1rem,3vw,1.5rem)] font-medium tracking-tight">
-                {tech.name}
-              </span>
+              {/* Card Header */}
+              <div className="flex items-center mb-4 pb-4 border-b border-border">
+                <h3 className="font-grotesk font-bold text-sm sm:text-base tracking-widest uppercase text-foreground">
+                  {cat.title}
+                </h3>
+              </div>
+
+              {/* Skills List — reference style with underlines */}
+              <div className="flex flex-wrap gap-8 mt-4">
+                {cat.skills.map((skill, j) => (
+                  <span key={j} className="font-mono text-sm text-foreground lowercase">
+                    {skill.toLowerCase()}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };
