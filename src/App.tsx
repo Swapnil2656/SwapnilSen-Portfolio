@@ -7,6 +7,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { AnimatePresence } from "framer-motion";
 
+import { Analytics } from "@vercel/analytics/react";
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -37,6 +39,7 @@ function App() {
     <Router>
       <CustomCursor />
       <AppRoutes />
+      <Analytics />
     </Router>
   );
 }
