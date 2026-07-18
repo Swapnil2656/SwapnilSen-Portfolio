@@ -101,7 +101,6 @@ const Navbar: React.FC = () => {
             backdropFilter: scrolled ? "blur(18px)" : "none",
             boxShadow: scrolled ? "0 4px 24px rgba(0,0,0,0.08)" : "none",
             border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
-            borderBottom: !scrolled ? "1px solid var(--color-border)" : undefined,
             transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >

@@ -62,17 +62,12 @@ const Hero: React.FC = () => {
               Software Engineer · AI & ML · Full Stack
             </motion.p>
 
-            <motion.div
+            <motion.p
               variants={fadeUp}
-              className="sm:max-w-sm md:max-w-md lg:max-w-xl text-base lg:text-lg text-neutral-600 leading-relaxed mb-6 md:mb-8 space-y-4"
+              className="sm:max-w-sm md:max-w-md lg:max-w-xl text-base lg:text-lg text-neutral-600 leading-relaxed mb-6 md:mb-8"
             >
-              <p>
-                I am a Computer Science student with a specialization in AI & ML, focused strictly on full-stack development, real-world execution, and scalable system design — backed by a certified IT Specialist foundation. Rather than relying solely on tutorials and theory, my drive is to design and ship real, working software.
-              </p>
-              <p>
-                Currently, my technical focus spans React Native, Next.js, FastAPI, and MongoDB. I've shipped 8+ full-stack projects across hackathons — most recently Carbonix, a multi-agent carbon-intelligence platform for cloud infrastructure, and Cafe POS, a full-stack restaurant system with live kitchen displays and real-time table management. Alongside shipping these products, I'm sharpening my fundamentals in DSA (Java/Python) and system design, with a growing focus on scalable backend architecture.
-              </p>
-            </motion.div>
+              I am a Computer Science student with a specialization in AI & ML, focused strictly on full-stack development, real-world execution, and scalable system design — backed by a certified IT Specialist foundation. Rather than relying solely on tutorials and theory, my drive is to design and ship real, working software.
+            </motion.p>
 
             {/* STATUS BADGE — reference style */}
             <motion.div variants={fadeUp} className="mb-6 md:mb-8">
