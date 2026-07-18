@@ -56,15 +56,15 @@ const About = () => {
           {/* RIGHT: Description paragraphs */}
           <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
             <p className="text-base sm:text-lg leading-[1.9] text-neutral-700">
-              First-year AI & ML student at Parul University with a certified IT Specialist background and a bias for shipping real products over writing theory. I've built and shipped 8+ full-stack projects across hackathons — from a carbon-intelligence platform for cloud infra (Carbonix) to a full restaurant POS with live kitchen displays (Cafe POS) — working across React Native, Next.js, FastAPI, and MongoDB.
+              I am a Computer Science student with a specialization in AI & ML, focused strictly on full-stack development, real-world execution, and scalable system design — backed by a certified IT Specialist foundation. Rather than relying solely on tutorials and theory, my drive is to design and ship real, working software.
             </p>
             <p className="text-base sm:text-lg leading-[1.9] text-neutral-700">
-              Strong in DSA (Java/Python) and system design fundamentals, with a growing focus on scalable backend architecture.
+              Currently, my technical focus spans React Native, Next.js, FastAPI, and MongoDB. I've shipped 8+ full-stack projects across hackathons — most recently Carbonix, a multi-agent carbon-intelligence platform for cloud infrastructure, and Cafe POS, a full-stack restaurant system with live kitchen displays and real-time table management. Alongside shipping these products, I'm sharpening my fundamentals in DSA (Java/Python) and system design, with a growing focus on scalable backend architecture.
             </p>
             {/* Quote block — reference style */}
             <div className="border border-border p-5 mt-2">
               <p className="font-mono text-sm italic text-neutral-500 leading-relaxed">
-                "Build things that matter, architect things that last."
+                "You don't learn to build by reading about it. You learn by shipping."
               </p>
             </div>
           </motion.div>
