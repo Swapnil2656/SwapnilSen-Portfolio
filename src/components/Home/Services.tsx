@@ -1,163 +1,56 @@
-import React, { useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Code, Globe, Server, Database, TrendingUp, Cpu, Smartphone } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import { Code, Database, Globe, Server, Smartphone, Sparkles } from "lucide-react";
+import { services } from "../../data/portfolio";
 import { staggerContainer, fadeUp } from "../../utils/animations";
+import SectionHeader from "../UI/SectionHeader";
 
-gsap.registerPlugin(ScrollTrigger);
+const icons = [Globe, Smartphone, Sparkles, Server, Database, Code];
 
-interface ServiceItem {
-  icon: string;
-  title: string;
-}
-
-const services: ServiceItem[] = [
-  { icon: "Globe", title: "Full-Stack Web Development" },
-  { icon: "Smartphone", title: "Native iOS Development" },
-  { icon: "TrendingUp", title: "AI & ML Solutions" },
-  { icon: "Server", title: "Backend & APIs" },
-  { icon: "Database", title: "Database Management" },
-  { icon: "Code", title: "Web Scraping & Automation" },
-];
-
-const iconMap: Record<string, any> = {
-  Code,
-  Globe,
-  Server,
-  Database,
-  TrendingUp,
-  Cpu,
-  Smartphone,
-};
-
-const Services: React.FC = () => {
-  const topRow = [...services, ...services, ...services]; // Triple for smoother loop
-  const bottomRow = [
-    ...services.slice().reverse(),
-    ...services.slice().reverse(),
-    ...services.slice().reverse(),
-  ];
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const topRowRef = useRef<HTMLDivElement>(null);
-  const bottomRowRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      // 1. Continuous Marquee
-      // Slower duration for a calmer feel (35s instead of 25s)
-      gsap.to(topRowRef.current, {
-        xPercent: -50,
-        ease: "none",
-        repeat: -1,
-        duration: 35,
-      });
-
-      gsap.to(bottomRowRef.current, {
-        xPercent: -50,
-        ease: "none",
-        repeat: -1,
-        duration: 35,
-      });
-      // Start box from -50 back to 0 for right scroll
-      gsap.set(bottomRowRef.current, { xPercent: -50 });
-      gsap.to(bottomRowRef.current, {
-        xPercent: 0,
-        ease: "none",
-        repeat: -1,
-        duration: 35,
-      });
-    },
-    { scope: containerRef },
-  );
-
-  return (
-    <section
-      id="services"
-      ref={containerRef}
-      className="scroll-mt-14 py-8 lg:py-16 flex flex-col relative overflow-hidden"
+const Services: React.FC = () => (
+  <section id="services" className="scroll-mt-20 py-20 lg:py-32">
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+      className="max-w-7xl mx-auto px-4 sm:px-6"
     >
-      <motion.div
-        className="max-w-7xl mx-auto px-4 sm:px-6 w-full"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
-        <motion.div variants={fadeUp}>
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-20 mb-16">
-            {/* LEFT: Numbered label */}
-            <div>
-              <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">05.</p>
-              <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
-                WHAT I<br />OFFER
-              </h2>
-            </div>
+      <SectionHeader
+        index="02"
+        title={<>What I<br />Offer</>}
+        description="Services to help bring your ideas to life — from the first prototype to a production-ready product."
+      />
 
-            {/* RIGHT: Sub-text */}
-            <div className="flex flex-col justify-center">
-              <p className="mt-4 text-base sm:text-lg leading-[1.9] text-neutral-600 max-w-3xl">
-                Services to help bring your ideas to life — from development to
-                optimization and learning.
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border">
+        {services.map((s, i) => {
+          const Icon = icons[i % icons.length];
+          return (
+            <motion.div
+              key={s.title}
+              variants={fadeUp}
+              className="group relative bg-background p-7 sm:p-9 min-h-[240px] flex flex-col overflow-hidden"
+            >
+              {/* hover fill */}
+              <span className="absolute inset-0 bg-foreground origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+              <div className="relative flex items-start justify-between mb-10">
+                <Icon className="w-7 h-7 group-hover:text-background transition-colors duration-500" strokeWidth={1.5} />
+                <span className="font-mono text-[11px] tracking-widest text-neutral-400 group-hover:text-background/50 transition-colors duration-500">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <h3 className="relative font-grotesk font-bold text-xl sm:text-2xl tracking-tight mb-3 group-hover:text-background transition-colors duration-500">
+                {s.title}
+              </h3>
+              <p className="relative text-neutral-600 leading-relaxed group-hover:text-background/70 transition-colors duration-500">
+                {s.description}
               </p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Scroll Rows Container */}
-        <motion.div
-          variants={fadeUp}
-          className="space-y-16 relative overflow-hidden w-full"
-        >
-          {/* Top Row - scroll left */}
-          <div ref={topRowRef} className="flex gap-4 sm:gap-6 md:gap-8 w-max">
-            {topRow.map((service, index) => {
-              const Icon = iconMap[service.icon] || Code;
-              return (
-                <div
-                  key={`top-${index}`}
-                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 flex flex-col items-start cursor-pointer hover:opacity-70 transition-opacity duration-300"
-                >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mb-3 rounded-full border border-foreground/20">
-                    <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-foreground" />
-                  </div>
-                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground">
-                    {service.title}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom Row - scroll right */}
-          <div
-            ref={bottomRowRef}
-            className="flex gap-4 sm:gap-6 md:gap-8 w-max"
-          >
-            {bottomRow.map((service, index) => {
-              const Icon = iconMap[service.icon] || Code;
-              return (
-                <div
-                  key={`bottom-${index}`}
-                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 flex flex-col items-start cursor-pointer hover:opacity-70 transition-opacity duration-300"
-                >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center mb-3 rounded-full border border-foreground/20">
-                    <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-foreground" />
-                  </div>
-                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground">
-                    {service.title}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-};
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
+  </section>
+);
 
 export default Services;

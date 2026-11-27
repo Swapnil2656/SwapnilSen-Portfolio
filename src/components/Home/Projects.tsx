@@ -1,316 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, ChevronDown } from "lucide-react";
-import { projectItem } from "../../utils/constants";
-import { staggerContainer, fadeUp, EASE_PREMIUM } from "../../utils/animations";
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowUpRight, Github } from "lucide-react";
+import { projects, Project } from "../../data/portfolio";
+import { staggerContainer, fadeUp } from "../../utils/animations";
+import SectionHeader from "../UI/SectionHeader";
+import ProjectCover from "../UI/ProjectCover";
 
-/* ===================== MEDIA QUERY HOOK ===================== */
+const ProjectCard: React.FC<{ project: Project; index: number; featured?: boolean }> = ({
+  project,
+  index,
+  featured,
+}) => (
+  <motion.article
+    variants={fadeUp}
+    className={`group relative border border-border bg-background hover:border-foreground transition-colors ${
+      featured ? "lg:col-span-2" : ""
+    }`}
+  >
+    <Link
+      to={`/projects/${project.slug}`}
+      className="absolute inset-0 z-10"
+      aria-label={`Read the ${project.title} case study`}
+    />
 
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
+    <div className={featured ? "grid lg:grid-cols-[1.2fr_1fr]" : ""}>
+      <ProjectCover project={project} index={index} className={featured ? "aspect-[16/10] lg:aspect-auto lg:h-full" : "aspect-[16/10]"} />
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
+      <div className="p-5 sm:p-7 flex flex-col gap-4">
+        <div className="flex items-center justify-between font-mono text-[10px] tracking-widest uppercase text-neutral-500">
+          <span>
+            {String(index + 1).padStart(2, "0")} / {project.category}
+          </span>
+          <span>{project.year}</span>
+        </div>
 
-  return matches;
-};
+        <div>
+          <h3 className="font-grotesk font-bold uppercase tracking-tight leading-none text-[clamp(1.8rem,3vw,2.75rem)] flex items-start justify-between gap-4">
+            {project.title}
+            <ArrowUpRight
+              className="shrink-0 mt-1 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+              size={28}
+            />
+          </h3>
+          <p className="mt-2 font-mono text-xs tracking-widest uppercase text-neutral-500">{project.tagline}</p>
+        </div>
 
-/* ===================== ANIMATIONS ===================== */
+        <p className="text-neutral-600 leading-relaxed">{project.summary}</p>
 
-const bgFill = {
-  hidden: { scaleX: 0 },
-  show: {
-    scaleX: 1,
-    transition: {
-      duration: 0.35,
-      ease: EASE_PREMIUM,
-    },
-  },
-};
+        <ul className="flex flex-wrap gap-2 mt-auto pt-2" aria-label="Tech stack">
+          {project.tech.slice(0, featured ? 7 : 4).map((t) => (
+            <li key={t} className="font-mono text-[11px] border border-border px-2.5 py-1 text-neutral-600">
+              {t.toLowerCase()}
+            </li>
+          ))}
+        </ul>
 
-/* ===================== COMPONENT ===================== */
-
-const Projects: React.FC<{ projects: projectItem[] }> = ({ projects }) => {
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [expanded, setExpanded] = useState<number | null>(null);
-
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-
-  return (
-    <section id="projects" className="scroll-mt-14 py-8 lg:py-16">
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-        className="mx-auto max-w-6xl px-4 sm:px-6"
-      >
-        {/* ── TWO-COLUMN EDITORIAL HEADER ── */}
-        <motion.div variants={fadeUp} className="mb-12 lg:mb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-32">
-            {/* LEFT: Numbered label */}
-            <div>
-              <p className="font-mono text-[clamp(1rem,2vw,1.2rem)] text-neutral-400 leading-none mb-1">01.</p>
-              <h2 className="font-grotesk font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight uppercase text-foreground">
-               PROJECTS
-              </h2>
-            </div>
-            {/* RIGHT: Sub-text */}
-            <div className="flex flex-col justify-center">
-              <p className="text-base sm:text-lg leading-relaxed text-neutral-600">
-                A curated selection of products, tools, and platforms I've built —
-                focused on real-world usability and engineering depth.
-              </p>
-            </div>
+        {(project.live || project.github) && (
+          <div className="relative z-20 flex gap-4 pt-2 font-mono text-[11px] tracking-widest uppercase">
+            {project.live && (
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline underline-offset-4 hover:no-underline">
+                Live demo <ArrowUpRight size={12} />
+              </a>
+            )}
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-neutral-500 hover:text-foreground">
+                <Github size={12} /> Source
+              </a>
+            )}
           </div>
-        </motion.div>
+        )}
+      </div>
+    </div>
+  </motion.article>
+);
 
-        {/* ===== PROJECT LIST ===== */}
-        <motion.div
-          className="divide-y divide-border border-b border-border"
-          variants={{ hidden: {}, show: {} }}
-        >
-          {projects.map((project, idx) => {
-            const isHovered = hovered === idx;
-            const isExpanded = expanded === idx;
-
-            return (
-              <motion.div
-                key={project.title}
-                variants={fadeUp}
-                className="relative"
-                onMouseEnter={() => isDesktop && setHovered(idx)}
-                onMouseLeave={() => isDesktop && setHovered(null)}
-              >
-                {/* Hover Background */}
-                <motion.div
-                  variants={bgFill}
-                  initial="hidden"
-                  animate={isHovered ? "show" : "hidden"}
-                  className="lg:absolute inset-0 origin-left bg-foreground"
-                />
-
-                {/* ================= ROW ================= */}
-                <div
-                  onClick={() => setExpanded(isExpanded ? null : idx)}
-                  className={`
-      relative z-10
-      flex flex-col sm:flex-row sm:items-center lg:grid lg:grid-cols-[70px_1.4fr_1.6fr_auto_24px]
-     gap-2 sm:gap-6
-      px-2 py-4 md:px-4 md:py-6
-      lg:px-6 lg:py-8
-      cursor-pointer
-      transition-colors duration-300
-      ${isHovered ? "text-background" : "text-foreground"}
-    `}
-                >
-                  {/* Index */}
-                  <span
-                    className={`font-mono text-xs tracking-widest ${
-                      isHovered ? "text-background/60" : "text-neutral-400"
-                    }`}
-                  >
-                    {String(idx + 1).padStart(2, "0")}.
-                  </span>
-
-                  <div className="flex gap-4 items-end justify-between">
-                    {/* Title + Meta Pills */}
-                    <div>
-                      <h3 className="font-grotesk text-[clamp(1.8rem,3vw,3rem)] font-bold leading-tight uppercase">
-                        {project.title}
-                      </h3>
-
-                      <div className="mt-3 flex gap-2">
-                        {/* Project Type */}
-                        <span
-                          className={`
-            rounded-full px-3 py-[5px]
-            text-[11px] font-medium tracking-wide
-            border
-            ${
-              isHovered
-                ? "border-background/40 text-background"
-                : "border-border text-muted-foreground"
-            }
-          `}
-                        >
-                          {project.projectType === "personal"
-                            ? "Personal"
-                            : "Client"}
-                        </span>
-
-                        {/* Status */}
-                        <span
-                          className={`
-            rounded-full px-3 py-[5px]
-            text-[11px] font-medium tracking-wide
-            border
-            ${
-              isHovered
-                ? "border-background/40 text-background"
-                : "border-border text-muted-foreground"
-            }
-          `}
-                        >
-                          {project.status === "completed"
-                            ? "Completed"
-                            : "In Progress"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Chevron for smaller screens */}
-                    <motion.span
-                      animate={{ rotate: isExpanded ? 180 : 0 }}
-                      transition={{ duration: 0.3, ease: EASE_PREMIUM }}
-                      className="sm:hidden flex items-center justify-center"
-                    >
-                      <ChevronDown
-                        size={18}
-                        className={
-                          isHovered
-                            ? "text-background/60"
-                            : "text-muted-foreground"
-                        }
-                      />
-                    </motion.span>
-                  </div>
-
-                  {/* Tech Pills (MAIN ROW – hidden when expanded) */}
-                  <motion.div
-                    animate={{
-                      opacity: isExpanded ? 0 : 1,
-                      height: isExpanded ? 0 : "auto",
-                    }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="hidden lg:flex flex-wrap gap-2 overflow-hidden"
-                  >
-                    {project.tech.slice(0, 4).map((t) => (
-                      <span
-                        key={t}
-                        className={`
-            rounded-full px-3 py-[5px]
-            text-[11px] font-medium tracking-wide
-            border
-            ${
-              isHovered
-                ? "border-background/40 text-background"
-                : "border-border text-muted-foreground"
-            }
-          `}
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </motion.div>
-
-                  {/* View Project */}
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    onClick={(e) => e.stopPropagation()}
-                    className={`
-        rounded-full px-4 py-[7px]
-        text-[11px] font-medium tracking-wide
-        border transition-colors
-        flex items-center gap-2 max-w-max sm:ml-auto
-        ${
-          isHovered
-            ? "border-background text-background"
-            : "border-border text-muted-foreground"
+const Projects: React.FC = () => (
+  <section id="projects" className="scroll-mt-20 py-20 lg:py-32">
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.05 }}
+      className="max-w-7xl mx-auto px-4 sm:px-6"
+    >
+      <SectionHeader
+        index="01"
+        title={<>Selected<br />Work</>}
+        description="A curated selection of products, tools and platforms I've built — each with a short case study on the problem, the approach and what shipped."
+        aside={
+          <a
+            href="https://github.com/Swapnil2656"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase underline underline-offset-4 hover:no-underline w-max"
+          >
+            All repositories on GitHub <ArrowUpRight size={12} />
+          </a>
         }
-      `}
-                  >
-                    View Project <ExternalLink size={14} />
-                  </a>
+      />
 
-                  {/* Chevron for larger screens */}
-                  <motion.span
-                    animate={{ rotate: isExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: EASE_PREMIUM }}
-                    className="hidden sm:flex items-center justify-center"
-                  >
-                    <ChevronDown
-                      size={18}
-                      className={
-                        isHovered
-                          ? "text-background/60"
-                          : "text-muted-foreground"
-                      }
-                    />
-                  </motion.span>
-                </div>
-
-                {/* ================= EXPANDED CONTENT ================= */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.45, ease: EASE_PREMIUM }}
-                      className="relative z-10 overflow-hidden"
-                    >
-                      <div className="px-4 py-6 max-w-4xl">
-                        {/* Description */}
-                        <p
-                          className={`
-            text-sm md:text-base
-            leading-relaxed
-            mb-8
-            transition-colors
-            ${isHovered ? "text-background/80" : "text-neutral-600"}
-          `}
-                        >
-                          {project.description}
-                        </p>
-
-                        {/* ENVIRONMENT DEPENDENCIES — reference label */}
-                        <div className="mb-3">
-                          <p className={`font-mono text-[10px] tracking-widest uppercase mb-3 ${isHovered ? "text-background/50" : "text-neutral-400"}`}>
-                            ENVIRONMENT DEPENDENCIES
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tech.map((t) => (
-                              <span
-                                key={t}
-                                className={`
-                  px-3 py-[5px]
-                  text-[11px]
-                  font-mono
-                  tracking-wide
-                  border
-                  transition-colors
-                  ${
-                    isHovered
-                      ? "border-background/40 text-background"
-                      : "border-border text-neutral-500"
-                  }
-                `}
-                              >
-                                {t.toLowerCase()}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-};
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        {projects.map((p, i) => (
+          <ProjectCard key={p.slug} project={p} index={i} featured={i === 0 || (i === projects.length - 1 && i % 2 === 1)}
+          />
+        ))}
+      </div>
+    </motion.div>
+  </section>
+);
 
 export default Projects;

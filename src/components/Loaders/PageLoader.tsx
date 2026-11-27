@@ -1,63 +1,30 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
-
-const overlay = {
-  hidden: { y: 40, opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { y: 0, duration: 0.8, ease: EASE_PREMIUM },
-  },
-  exit: {
-    opacity: 0,
-    transition: { y: 40, duration: 0.8, ease: EASE_PREMIUM },
-  },
-};
+import { profile } from "../../data/portfolio";
 
 const PageLoader: React.FC = () => {
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-background"
-      variants={overlay}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
+      className="fixed inset-0 z-[9998] bg-background flex flex-col items-center justify-center gap-6"
+      initial={{ opacity: 1 }}
+      exit={{ y: "-100%", transition: { duration: 0.8, ease: EASE_PREMIUM } }}
+      aria-hidden="true"
     >
-      {/* Center loader */}
-      <div className="relative h-full w-full flex flex-col items-center justify-center gap-8">
-        {/* Identity */}
-        <div className="flex flex-col items-center gap-3">
-          <h1 className="font-funnel text-[clamp(3rem,7vw,5.5rem)] font-extrabold tracking-tight">
-            Swapnil Sen{" "}
-          </h1>
-          <p className="font-jost text-[11px] tracking-[0.45em] uppercase text-muted-foreground">
-            Software Engineer
-          </p>
-        </div>
-
-        {/* Progress bar */}
-        <div className="relative w-64 h-[2px] bg-border overflow-hidden">
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-foreground"
-            initial={{ width: "0%" }}
-            animate={{ width: ["0%", "100%"] }}
-            transition={{
-              duration: 2.4,
-              ease: EASE_PREMIUM,
-              repeat: Infinity,
-            }}
-          />
-        </div>
-
-        {/* Status */}
-        <motion.span
-          className="font-mono text-[10px] tracking-widest text-muted-foreground"
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          INITIALISING SYSTEM
-        </motion.span>
+      <h1 className="font-grotesk text-[clamp(2.5rem,7vw,5rem)] font-bold tracking-tight uppercase leading-none">
+        {profile.name}
+      </h1>
+      <div className="relative w-56 h-px bg-border overflow-hidden">
+        <motion.div
+          className="absolute inset-y-0 left-0 bg-foreground"
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 1, ease: EASE_PREMIUM }}
+        />
       </div>
+      <span className="font-mono text-[10px] tracking-[0.3em] text-neutral-500 uppercase">
+        Initialising system<span className="animate-blink">_</span>
+      </span>
     </motion.div>
   );
 };
