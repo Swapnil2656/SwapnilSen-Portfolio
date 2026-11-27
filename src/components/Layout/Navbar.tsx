@@ -1,174 +1,134 @@
 import React, { useEffect, useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
+import { Command } from "lucide-react";
 import { EASE_PREMIUM } from "../../utils/animations";
 import StaggeredMenu from "./StaggeredMenu";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { socials } from "../../data/portfolio";
+import { NAV_LINKS, openCommandPalette } from "../../utils/nav";
 
-/* ===================== ANIMATIONS ===================== */
 
-const navbarVariants: Variants = {
-  hidden: { opacity: 0, y: -20, filter: "blur(4px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 1, ease: EASE_PREMIUM },
-  },
-};
-
-const navItemVariants: Variants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: 0.1 + i * 0.05, duration: 0.8, ease: EASE_PREMIUM },
-  }),
-};
-
-/* ===================== COMPONENT ===================== */
+/** Tracks which section is currently in view (scroll-spy). */
+function useActiveSection(ids: string[], enabled: boolean) {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    if (!enabled) {
+      setActive(null);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids, enabled]);
+  return active;
+}
 
 const Navbar: React.FC = () => {
-  const [scrolled, setScrolled] = useState<boolean>(false);
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection(
+    NAV_LINKS.map((l) => l.id),
+    isHome,
+  );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    const onResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "auto";
-  }, [menuOpen]);
-
-  useEffect(() => {
-    if (windowWidth >= 768) setMenuOpen(false);
-  }, [windowWidth]);
-
-  const links = [
-    { label: "01. Projects", id: "projects" },
-    { label: "02. Services", id: "services" },
-    { label: "03. Skills", id: "skills" },
-    { label: "04. About", id: "about" },
-    { label: "05. Contact", id: "contact" },
-  ];
-
-  const menuItems = links.map((item) => ({
-    label: item.label,
-    ariaLabel: item.label,
-    link: `#${item.id}`,
-  }));
-
-  const staggeredSocials = [
-    { label: "GitHub", link: "https://github.com/Swapnil2656" },
-    { label: "LinkedIn", link: "https://www.linkedin.com/in/swapnil-sen-812030309/" },
-  ];
-
-  let maxWidth = windowWidth;
-  let marginLeft = 0;
-
-  if (scrolled && windowWidth >= 768) {
-    if (windowWidth >= 1440) maxWidth = windowWidth * 0.6;
-    else if (windowWidth >= 1024) maxWidth = windowWidth * 0.8;
-    else maxWidth = windowWidth * 0.95;
-    marginLeft = (windowWidth - maxWidth) / 2;
-  }
 
   return (
     <>
       {/* ================= DESKTOP / TABLET ================= */}
-      {windowWidth >= 768 && (
-        <motion.header
-          variants={navbarVariants}
-          initial="hidden"
-          animate="visible"
-          className={`fixed ${scrolled ? "top-5" : "top-0"} left-0 z-50`}
-          style={{
-            width: "100%",
-            maxWidth,
-            marginLeft,
-            padding: scrolled ? "0.75rem 2rem" : "1.25rem 2rem",
-            borderRadius: scrolled ? "2.5rem" : "0rem",
-            backgroundColor: scrolled
-              ? "rgba(242,242,245,0.85)"
-              : "var(--color-background)",
-            backdropFilter: scrolled ? "blur(18px)" : "none",
-            boxShadow: scrolled ? "0 4px 24px rgba(0,0,0,0.08)" : "none",
-            border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
-            transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
+      <motion.header
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: EASE_PREMIUM }}
+        className="hidden md:block fixed inset-x-0 top-0 z-50 px-4"
+      >
+        <nav
+          aria-label="Primary"
+          className={`mx-auto flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            scrolled
+              ? "mt-4 max-w-5xl rounded-full border border-black/10 bg-background/80 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] px-6 py-2.5"
+              : "mt-0 max-w-7xl px-2 py-5"
+          }`}
         >
-          <div className="w-full xl:max-w-7xl mx-auto flex items-center justify-between">
-            {/* LOGO */}
-            <motion.span
-              custom={0}
-              variants={navItemVariants}
-              initial="hidden"
-              animate="visible"
-              className="text-base font-bold tracking-tight font-grotesk uppercase"
-            >
-              Swapnil Sen
-            </motion.span>
+          <Link to="/" className="font-grotesk text-base font-bold uppercase tracking-tight">
+            Swapnil Sen
+          </Link>
 
-            {/* NUMBERED LINKS */}
-            <ul className="flex md:gap-4 xl:gap-6 text-[11px] font-bold tracking-widest uppercase font-mono">
-              {links.map((item, i) => (
-                <motion.li
-                  key={item.id}
-                  custom={i + 1}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <a
-                    href={`#${item.id}`}
-                    className="text-neutral-500 hover:text-foreground transition-colors"
+          <ul className="flex gap-1 lg:gap-2 font-mono text-[11px] tracking-widest uppercase">
+            {NAV_LINKS.map((item, i) => {
+              const isActive = active === item.id;
+              return (
+                <li key={item.id}>
+                  <Link
+                    to={`/#${item.id}`}
+                    className={`relative block px-3 py-1.5 rounded-full transition-colors ${
+                      isActive ? "text-background" : "text-neutral-500 hover:text-foreground"
+                    }`}
                   >
-                    {item.label}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 rounded-full bg-foreground"
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative">
+                      <span className="opacity-50">0{i + 1}.</span> {item.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
 
-            {/* SOCIAL ICONS */}
-            <motion.div
-              custom={links.length + 1}
-              variants={navItemVariants}
-              initial="hidden"
-              animate="visible"
-              className="flex items-center gap-4 text-foreground"
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={openCommandPalette}
+              className="hidden lg:inline-flex items-center gap-1.5 font-mono text-[11px] tracking-widest uppercase text-neutral-500 hover:text-foreground border border-border rounded-full px-3 py-1.5 transition-colors"
+              aria-label="Open command menu"
             >
-              <a href="https://github.com/Swapnil2656" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-500 transition-colors">
-                <Github className="w-5 h-5" />
-              </a>
-              <a href="https://www.linkedin.com/in/swapnil-sen-812030309/" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-500 transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="mailto:swapnilsen2656@gmail.com" className="hover:text-neutral-500 transition-colors">
-                <Mail className="w-5 h-5" />
-              </a>
-            </motion.div>
+              <Command size={12} /> K
+            </button>
+            <a
+              href={socials.email}
+              className="font-mono text-[11px] tracking-widest uppercase bg-foreground text-background rounded-full px-4 py-2 hover:bg-neutral-700 transition-colors"
+            >
+              Let's talk
+            </a>
           </div>
-        </motion.header>
-      )}
+        </nav>
+      </motion.header>
 
       {/* ================= MOBILE ================= */}
-      {windowWidth < 768 && (
-        <>
-          <StaggeredMenu
-            items={menuItems}
-            socialItems={staggeredSocials}
-            onMenuOpen={() => setMenuOpen(true)}
-            onMenuClose={() => setMenuOpen(false)}
-          />
-        </>
-      )}
+      <div className="md:hidden">
+        <StaggeredMenu
+          colors={["#d4d4d8", "#0c0c0c"]}
+          accentColor="#0c0c0c"
+          items={NAV_LINKS.map((l) => ({ label: l.label, ariaLabel: l.label, link: `/#${l.id}` }))}
+          socialItems={[
+            { label: "GitHub", link: socials.github },
+            { label: "LinkedIn", link: socials.linkedin },
+            { label: "Email", link: socials.email },
+          ]}
+          onMenuOpen={() => (document.body.style.overflow = "hidden")}
+          onMenuClose={() => (document.body.style.overflow = "")}
+        />
+      </div>
     </>
   );
 };

@@ -497,7 +497,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     "
           >
             {/* LEFT: NAME */}
-            <span className="text-lg font-jost font-bold">Dev</span>
+            <a href="/" className="text-base font-grotesk font-bold uppercase tracking-tight">
+              Swapnil Sen
+            </a>
 
             {/* RIGHT: EXISTING MENU BUTTON */}
             <button
